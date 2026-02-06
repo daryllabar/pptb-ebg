@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Early Bound Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Early Bound Generator</h1>
+            <p class="subtitle">Configure PAC ModelBuilder settings for early bound class generation</p>
+        </header>
+
+        <!-- Connection Status -->
+        <section class="card">
+            <h2>🔗 Connection Status</h2>
+            <div id="connection-info" class="info-box">
+                <div class="loading">Checking connection...</div>
+            </div>
+        </section>
+
+        <!-- Basic Settings -->
+        <section class="card">
+            <h2>📋 Basic Settings</h2>
+            
+            <div class="form-group">
+                <label for="namespace">Namespace:</label>
+                <input type="text" id="namespace" placeholder="YourCompany.Crm" />
+                <small>The namespace for generated classes</small>
+            </div>
+
+            <div class="form-group">
+                <label for="serviceContextName">Service Context Name:</label>
+                <input type="text" id="serviceContextName" placeholder="XrmServiceContext" />
+                <small>Name of the generated service context class</small>
+            </div>
+
+            <div class="form-group">
+                <label for="builderSettingsPath">Builder Settings Path:</label>
+                <input type="text" id="builderSettingsPath" placeholder="builderSettings.json" value="builderSettings.json" />
+                <small>Path to the builderSettings.json file (relative to settings file)</small>
+            </div>
+        </section>
+
+        <!-- Output Paths -->
+        <section class="card">
+            <h2>📁 Output Paths</h2>
+            
+            <div class="form-group">
+                <label for="entityTypesFolder">Entity Types Folder:</label>
+                <input type="text" id="entityTypesFolder" placeholder="Entities" />
+                <small>Folder for generated entity classes</small>
+            </div>
+
+            <div class="form-group">
+                <label for="optionSetsTypesFolder">Option Sets Folder:</label>
+                <input type="text" id="optionSetsTypesFolder" placeholder="OptionSets" />
+                <small>Folder for generated option set enums</small>
+            </div>
+
+            <div class="form-group">
+                <label for="messageTypesFolder">Message Types Folder:</label>
+                <input type="text" id="messageTypesFolder" placeholder="Messages" />
+                <small>Folder for generated message/action classes</small>
+            </div>
+        </section>
+
+        <!-- Entity/Action Generation -->
+        <section class="card">
+            <h2>🎯 Entity & Action Generation</h2>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateMessages" />
+                    Generate Messages (Actions/Custom APIs)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="entitiesWhitelist">Entities Whitelist (pipe-delimited):</label>
+                <input type="text" id="entitiesWhitelist" placeholder="account|contact|opportunity" />
+                <small>Leave empty to generate all entities, or specify entity logical names separated by |</small>
+            </div>
+
+            <div class="form-group">
+                <label for="entitiesToSkip">Entities to Skip (pipe-delimited):</label>
+                <input type="text" id="entitiesToSkip" placeholder="entity1|entity2" />
+                <small>Entity logical names to exclude from generation</small>
+            </div>
+
+            <div class="form-group">
+                <label for="entityPrefixesWhitelist">Entity Prefixes Whitelist (pipe-delimited):</label>
+                <input type="text" id="entityPrefixesWhitelist" placeholder="new_|prefix_" />
+                <small>Include only entities with these prefixes</small>
+            </div>
+
+            <div class="form-group">
+                <label for="entityPrefixesToSkip">Entity Prefixes to Skip (pipe-delimited):</label>
+                <input type="text" id="entityPrefixesToSkip" placeholder="old_|temp_" />
+                <small>Exclude entities with these prefixes</small>
+            </div>
+
+            <div class="form-group">
+                <label for="actionsWhitelist">Actions Whitelist (pipe-delimited):</label>
+                <input type="text" id="actionsWhitelist" placeholder="action1|action2" />
+                <small>Action logical names to generate (leave empty for all)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="actionsToSkip">Actions to Skip (pipe-delimited):</label>
+                <input type="text" id="actionsToSkip" placeholder="action1|action2" />
+                <small>Action logical names to exclude</small>
+            </div>
+
+            <div class="form-group">
+                <label for="actionPrefixesWhitelist">Action Prefixes Whitelist (pipe-delimited):</label>
+                <input type="text" id="actionPrefixesWhitelist" placeholder="new_|prefix_" />
+                <small>Include only actions with these prefixes</small>
+            </div>
+        </section>
+
+        <!-- File Organization -->
+        <section class="card">
+            <h2>📂 File Organization</h2>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="createOneFilePerEntity" />
+                    Create One File Per Entity
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="createOneFilePerOptionSet" />
+                    Create One File Per Option Set
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="createOneFilePerAction" />
+                    Create One File Per Action
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="deleteFilesFromOutputFolders" />
+                    Delete Files From Output Folders Before Generation
+                </label>
+                <small>Clears .cs files from output folders prior to generation (only if one-file-per is enabled)</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="addNewFilesToProject" />
+                    Add New Files To Project
+                </label>
+                <small>Automatically adds newly created files to the project file</small>
+            </div>
+        </section>
+
+        <!-- Code Generation Options -->
+        <section class="card">
+            <h2>⚙️ Code Generation Options</h2>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateAttributeNameConsts" />
+                    Generate Attribute Name Constants
+                </label>
+                <small>Creates an Attributes struct with logical name constants for each entity</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateActionAttributeNameConsts" />
+                    Generate Action Attribute Name Constants
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateAnonymousTypeConstructor" />
+                    Generate Anonymous Type Constructors
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateConstructorsSansLogicalName" />
+                    Generate Constructors Without Logical Name
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateEntityRelationships" />
+                    Generate Entity Relationships
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateEnumProperties" />
+                    Generate Enum Properties for Option Sets
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateGlobalOptionSets" />
+                    Generate Global Option Sets
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="emitEntityETC" />
+                    Emit Entity Type Code (ETC)
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="emitVirtualAttributes" />
+                    Emit Virtual Attributes
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="addDebuggerNonUserCode" />
+                    Add DebuggerNonUserCode Attribute
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="suppressGeneratedCodeAttribute" />
+                    Suppress Generated Code Attribute
+                </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="includeCommandLine" />
+                    Include Command Line in Generated Code
+                </label>
+            </div>
+        </section>
+
+        <!-- Naming Options -->
+        <section class="card">
+            <h2>📝 Naming & Casing Options</h2>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="camelCaseClassNames" />
+                    CamelCase Class Names
+                </label>
+                <small>Uses a dictionary to correctly camelcase class/enum names</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="camelCaseMemberNames" />
+                    CamelCase Member Names
+                </label>
+                <small>Uses a dictionary to correctly camelcase column/parameter names</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="adjustCasingForEnumOptions" />
+                    Adjust Casing for Enum Options
+                </label>
+                <small>Converts option labels into more readable C# names</small>
+            </div>
+
+            <div class="form-group">
+                <label for="camelCaseCustomWords">Custom CamelCase Words (pipe-delimited):</label>
+                <input type="text" id="camelCaseCustomWords" placeholder="API|JSON|XML|CSV" />
+                <small>Custom words to add to the camelcase dictionary</small>
+            </div>
+
+            <div class="form-group">
+                <label for="entityClassNameOverrides">Entity Class Name Overrides:</label>
+                <textarea id="entityClassNameOverrides" rows="3" placeholder="account:Family|contact:Person"></textarea>
+                <small>Override entity class names (format: logicalname:ClassName|...)</small>
+            </div>
+        </section>
+
+        <!-- Filtering Options -->
+        <section class="card">
+            <h2>🔍 Filtering Options</h2>
+            
+            <div class="form-group">
+                <label for="attributeBlacklist">Attribute Blacklist (pipe-delimited):</label>
+                <textarea id="attributeBlacklist" rows="3" placeholder="account.ownerid|contact.emailaddress*"></textarea>
+                <small>Attributes to exclude. Format: entity.attribute (wildcards supported for attributes)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="entityAttributeSpecifiedNames">Entity Attribute Specified Names:</label>
+                <textarea id="entityAttributeSpecifiedNames" rows="3" placeholder="account:AccountId,Name|contact:ContactId,FullName"></textarea>
+                <small>Format: EntityName:attr1,attr2|EntityName2:attr1,attr2</small>
+            </div>
+        </section>
+
+        <!-- Option Set Options -->
+        <section class="card">
+            <h2>🎲 Option Set Options</h2>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="addOptionSetMetadataAttribute" />
+                    Add Option Set Metadata Attribute
+                </label>
+                <small>Adds OptionSetMetadataAttribute to enums for metadata access</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="generateAllOptionSetLabelMetadata" />
+                    Generate All Option Set Label Metadata
+                </label>
+                <small>Generates all labels by language code in option set metadata</small>
+            </div>
+        </section>
+
+        <!-- Advanced Options -->
+        <section class="card">
+            <h2>🔧 Advanced Options</h2>
+            
+            <div class="form-group">
+                <label for="filePrefixText">File Prefix Text:</label>
+                <textarea id="filePrefixText" rows="3" placeholder="// Copyright (c) Your Company&#10;#pragma warning disable CS1591"></textarea>
+                <small>Text that appears at the top of every generated file</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="updateBuilderSettingsJson" checked />
+                    Update Builder Settings JSON
+                </label>
+                <small>If false, changes won't affect the builderSettings.json file</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="cleanupCrmSvcUtilLocalOptionSets" />
+                    Cleanup CrmSvcUtil Local Option Sets
+                </label>
+                <small>Deletes old local option set files created by CrmSvcUtil (for migration only)</small>
+            </div>
+        </section>
+
+        <!-- Actions -->
+        <section class="card actions-section">
+            <h2>💾 Actions</h2>
+            
+            <div class="button-group">
+                <button id="generate-config-btn" class="btn btn-primary">Generate Config JSON</button>
+                <button id="save-config-btn" class="btn btn-success">Save Config to File</button>
+                <button id="load-config-btn" class="btn btn-secondary">Load Config from File</button>
+                <button id="copy-config-btn" class="btn btn-info">Copy Config to Clipboard</button>
+            </div>
+
+            <div id="config-output" class="config-output" style="display: none;">
+                <h3>Generated Configuration:</h3>
+                <pre id="config-json"></pre>
+            </div>
+
+            <div id="status-message" class="status-message" style="display: none;"></div>
+        </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

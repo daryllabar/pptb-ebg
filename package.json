@@ -1,0 +1,53 @@
+{
+    "name": "@daryllabar/pptb-ebg",
+    "version": "1.0.0",
+    "displayName": "Early Bound Generator",
+    "description": "Power Platform ToolBox port of the EarlyBoundGeneratorV2 - Configure and generate early bound classes using PAC ModelBuilder",
+    "main": "index.html",
+    "author": "Daryl LaBar",
+    "keywords": [
+        "powerplatform",
+        "dataverse",
+        "toolbox",
+        "pptb",
+        "earlyboundgenerator",
+        "modelbuilder",
+        "codegen"
+    ],
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Daryl LaBar",
+            "url": "https://github.com/daryllabar"
+        }
+    ],
+    "configurations": {
+        "repository": "https://github.com/daryllabar/pptb-ebg",
+        "website": "https://github.com/daryllabar/pptb-ebg"
+    },
+    "features": {
+        "multiConnection": "optional"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/daryllabar/pptb-ebg.git"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "scripts": {
+        "build": "tsc && npm run copy-html && npm run copy-css",
+        "copy-html": "shx cp src/index.html dist/",
+        "copy-css": "shx cp src/styles.css dist/",
+        "watch": "tsc --watch"
+    },
+    "devDependencies": {
+        "@pptb/types": "^1.0.11",
+        "typescript": "^5.0.0",
+        "shx": "^0.4.0"
+    },
+    "files": [
+        "dist",
+        "icon"
+    ]
+}
