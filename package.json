@@ -2,7 +2,7 @@
     "name": "@daryllabar/pptb-ebg",
     "version": "1.0.0",
     "displayName": "Early Bound Generator",
-    "description": "Power Platform ToolBox port of the EarlyBoundGeneratorV2 - Configure and generate early bound classes using PAC ModelBuilder",
+    "description": "Configure and generate early bound classes using PAC ModelBuilder with Early Bound Generator Extensions/configurations",
     "main": "index.html",
     "author": "Daryl LaBar",
     "keywords": [
