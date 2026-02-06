@@ -1,0 +1,21 @@
+{
+  "Namespace": "YourCompany.Crm",
+  "ServiceContextName": "XrmServiceContext",
+  "EntityTypesFolder": "Entities",
+  "OptionSetsTypesFolder": "OptionSets",
+  "MessageTypesFolder": "Messages",
+  "GenerateMessages": true,
+  "UpdateBuilderSettingsJson": true,
+  "ExtensionConfig": {
+    "BuilderSettingsJsonRelativePath": "builderSettings.json",
+    "EntitiesWhitelist": "account|contact|opportunity|lead",
+    "CreateOneFilePerEntity": true,
+    "CreateOneFilePerOptionSet": true,
+    "GenerateAttributeNameConsts": true,
+    "GenerateEnumProperties": true,
+    "GenerateEntityRelationships": true,
+    "CamelCaseClassNames": true,
+    "CamelCaseMemberNames": true,
+    "AddDebuggerNonUserCode": true
+  }
+}
